@@ -15,6 +15,8 @@ const faceBorderWidth = 4;
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 
+const labelColor = '#313F76';
+
 var lastTime = 1;
 
 // ***************************
@@ -36,6 +38,7 @@ function animate(timeStamp) {
 }
 
 function drawLocalClock() {
+    drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', 12, labelColor);
     drawCircle(centerX, centerY, faceRadius, '#E18256', '#313F76');
 }
 
@@ -58,7 +61,13 @@ function drawCircle(x, y, radius, color, borderColor) {
     ctx.arc(x, y, dotRadius, 0, Math.PI * 2, false);
     ctx.fillStyle = borderColor;
     ctx.fill();
+}
 
+function drawLabel(x, y, text, fontSize, fontColor) {
+    ctx.font = `${fontSize}px Arial Black`;
+    const textWidth = ctx.measureText('Local Time').width;
+    ctx.fillStyle = fontColor;
+    ctx.fillText(text, x - textWidth/2, y);
 }
 
 
