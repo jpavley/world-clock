@@ -1,10 +1,12 @@
 body {
-    background-color: #f5e8d0;
+    background-color: #F0BA7D;
     margin: 0;
     padding: 0;
 }
 canvas {
     position: absolute;
+    width: 600px;
+    height: 600px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
