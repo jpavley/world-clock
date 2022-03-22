@@ -6,8 +6,8 @@
 // ***************************
 
 const canvas = document.getElementById('canvas');
-console.log(canvas)
 const ctx = canvas.getContext('2d');
+const lastTime = 1;
 
 function configureCanvas() {
     ctx.fillStyle = '#F5E8D0';
@@ -16,6 +16,12 @@ function configureCanvas() {
 
 configureCanvas();
 
+function animate(timeStamp) {
+    const deltaTime = timeStamp - lastTime;
+    lastTime = timeStamp;
 
+    configureCanvas();
+    requestAnimationFrame(animate);
+}
 
 
