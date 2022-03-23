@@ -49,17 +49,25 @@ function drawLocalClock() {
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
     const period = hours >= 12 ? 'PM' : 'AM';
-    const hour = hours % 12;
+    let hour = hours % 12;
 
     if (minutes < 10) {
         minutes = '0' + minutes;
     }
 
-    const currentTime24 = `${hour}:${minutes}:${seconds} 24`;
+    if (hour < 10) {
+        hour = '0' + hour;
+    }
+
+    const currentTime24 = `${hours}:${minutes}:${seconds} 24`;
     const currentTime12 = `${hour}:${minutes}:${seconds} ${period}`;
 
     drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
     drawCircle(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
+
+    drawHourHand(centerX, centerY, faceRadius * 0.5, (Math.PI / 2) - (Math.PI / 6) * minutes / 60);
+    drawMinuteHand(centerX, centerY, faceRadius * 0.75, (Math.PI / 2) - (Math.PI / 30) * seconds / 60);
+
     drawLabel(centerX, centerY + faceRadius + 20, currentTime24, timeFont, timeColor);
     drawLabel(centerX, centerY + faceRadius + 34, currentTime12, timeFont, timeColor);
 }
@@ -90,6 +98,23 @@ function drawLabel(x, y, text, font, fontColor) {
     const textWidth = ctx.measureText(text).width;
     ctx.fillStyle = fontColor;
     ctx.fillText(text, x - textWidth/2, y);
+}
+
+function drawHourHand(x, y, length, angle) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -length);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = faceBoarderColor;
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawMinuteHand(x, y, length, angle) { 
+    drawHourHand(x, y, length, angle);
 }
 
 
