@@ -20,6 +20,7 @@ const faceBoarderColor = '#313F76';
 
 const labelColor = '#313F76';
 const labelFont = 'bold 14px sans-serif';
+const timeColor = '#B5882D';
 const timeFont = 'bold 12px Courier New';
 
 var lastTime = 1;
@@ -50,16 +51,17 @@ function drawLocalClock() {
     const period = hours >= 12 ? 'PM' : 'AM';
     const hour = hours % 12;
 
-    //const currentTime24 = hours + ':' + minutes + ':' + seconds + ' 24';
-    const currentTime24 = `${hour}:${minutes}:${seconds} 24`;
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
 
-    //const currentTime12 = hour + ':' + minutes + ':' + seconds + ' ' + period;
+    const currentTime24 = `${hour}:${minutes}:${seconds} 24`;
     const currentTime12 = `${hour}:${minutes}:${seconds} ${period}`;
 
     drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
     drawCircle(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
-    drawLabel(centerX, centerY + faceRadius + 20, currentTime24, timeFont, labelColor);
-    drawLabel(centerX, centerY + faceRadius + 34, currentTime12, timeFont, labelColor);
+    drawLabel(centerX, centerY + faceRadius + 20, currentTime24, timeFont, timeColor);
+    drawLabel(centerX, centerY + faceRadius + 34, currentTime12, timeFont, timeColor);
 }
 
 function drawCircle(x, y, radius, color, borderColor) {
