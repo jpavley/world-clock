@@ -50,8 +50,11 @@ function drawLocalClock() {
     const period = hours >= 12 ? 'PM' : 'AM';
     const hour = hours % 12;
 
-    const currentTime24 = hours + ':' + minutes + ':' + seconds + ' 24';
-    const currentTime12 = hour + ':' + minutes + ':' + seconds + ' ' + period;
+    //const currentTime24 = hours + ':' + minutes + ':' + seconds + ' 24';
+    const currentTime24 = `${hour}:${minutes}:${seconds} 24`;
+
+    //const currentTime12 = hour + ':' + minutes + ':' + seconds + ' ' + period;
+    const currentTime12 = `${hour}:${minutes}:${seconds} ${period}`;
 
     drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
     drawCircle(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
