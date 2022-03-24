@@ -13,7 +13,7 @@ const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 
 const faceRadius = 45;
-const dotRadius = 6;
+const dotRadius = 8;
 const faceBorderWidth = 4;
 const faceColor = '#E18256';
 const faceBoarderColor = '#313F76';
@@ -67,18 +67,26 @@ function drawLocalClock() {
     const currentTime12 = `${hour}:${minutes}:${seconds} ${period}`;
 
     drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
-    drawCircle(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
+    drawFace(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
 
-    drawHourHand(centerX, centerY, faceRadius * 0.5, (Math.PI * 0));
-    drawMinuteHand(centerX, centerY, faceRadius * 0.75, (Math.PI * 1.5));
+    const hourHandHour = hours == 12 ? 0 : hours;
+    const hourHandAngle = (hourHandHour * 30) + (minutes / 2);
+    const minuteHandAngle = (minutes * 6);
+
+    // radians = degrees * (pi / 180)
+
+    drawHourHand(centerX, centerY, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6);
+    drawMinuteHand(centerX, centerY, faceRadius * 0.8, minuteHandAngle * Math.PI / 180, 4);
+
+    drawFaceDot(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
 
     drawLabel(centerX, centerY + faceRadius + 20, currentTime24, timeFont, timeColor);
     drawLabel(centerX, centerY + faceRadius + 34, currentTime12, timeFont, timeColor);
 }
 
-function drawCircle(x, y, radius, color, borderColor) {
+function drawFace(x, y, radius, color, borderColor) {
 
-    // outer border
+    // face border
     ctx.beginPath();
     ctx.arc(x, y, radius + faceBorderWidth, 0, Math.PI * 2, false);
     ctx.fillStyle = borderColor;
@@ -89,6 +97,16 @@ function drawCircle(x, y, radius, color, borderColor) {
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
     ctx.fillStyle = color;
     ctx.fill();
+}
+
+
+function drawFaceDot(x, y, radius, color, borderColor) {
+
+    // center dot border
+    ctx.beginPath();
+    ctx.arc(x, y, dotRadius + 3, 0, Math.PI * 2, false);
+    ctx.fillStyle = color;
+    ctx.fill();    
 
     // center dot
     ctx.beginPath();
@@ -104,21 +122,21 @@ function drawLabel(x, y, text, font, fontColor) {
     ctx.fillText(text, x - textWidth/2, y);
 }
 
-function drawHourHand(x, y, length, angle) {
+function drawHourHand(x, y, length, angle, lineWidth) {
     ctx.save();
     ctx.beginPath();
     ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.moveTo(0, 0);
     ctx.lineTo(0, -length);
-    ctx.lineWidth = 4;
+    ctx.lineWidth = lineWidth;
     ctx.strokeStyle = faceBoarderColor;
     ctx.stroke();
     ctx.restore();
 }
 
-function drawMinuteHand(x, y, length, angle) { 
-    drawHourHand(x, y, length, angle);
+function drawMinuteHand(x, y, length, angle, lineWidth) { 
+    drawHourHand(x, y, length, angle, lineWidth);
 }
 
 
