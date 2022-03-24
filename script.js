@@ -46,8 +46,8 @@ function animate(timeStamp) {
 function drawLocalClock() {
     const now = new Date();
     const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
     const period = hours >= 12 ? 'PM' : 'AM';
     let hour = hours % 12;
 
@@ -69,8 +69,8 @@ function drawLocalClock() {
     drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
     drawCircle(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
 
-    drawHourHand(centerX, centerY, faceRadius * 0.5, (Math.PI / 2) - (Math.PI / 6) * minutes / 60);
-    drawMinuteHand(centerX, centerY, faceRadius * 0.75, (Math.PI / 2) - (Math.PI / 30) * seconds / 60);
+    drawHourHand(centerX, centerY, faceRadius * 0.5, (Math.PI * 0));
+    drawMinuteHand(centerX, centerY, faceRadius * 0.75, (Math.PI * 1.5));
 
     drawLabel(centerX, centerY + faceRadius + 20, currentTime24, timeFont, timeColor);
     drawLabel(centerX, centerY + faceRadius + 34, currentTime12, timeFont, timeColor);
