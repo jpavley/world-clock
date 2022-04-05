@@ -45,7 +45,7 @@ function animate(timeStamp) {
 
 function drawLocalClock() {
     const now = new Date();
-    const hours = now.getHours();
+    let hours = now.getHours();
     let minutes = now.getMinutes();
     let seconds = now.getSeconds();
     const period = hours >= 12 ? 'PM' : 'AM';
@@ -61,6 +61,10 @@ function drawLocalClock() {
 
     if (hour < 10) {
         hour = '0' + hour;
+    }
+
+    if (hours < 10) {
+        hours = '0' + hours;
     }
 
     const currentTime24 = `${hours}:${minutes}:${seconds} 24`;
