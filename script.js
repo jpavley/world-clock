@@ -45,11 +45,11 @@ function animate(timeStamp) {
 
 function drawLocalClock() {
     const now = new Date();
-    let hours = now.getHours();
+    let hours24 = now.getHours();
+    let hours12 = hours24 % 12;
     let minutes = now.getMinutes();
     let seconds = now.getSeconds();
-    const period = hours >= 12 ? 'PM' : 'AM';
-    let hour = hours % 12;
+    const period = hours24 >= 12 ? 'PM' : 'AM';
 
     if (seconds < 10) {
         seconds = '0' + seconds;
@@ -59,21 +59,21 @@ function drawLocalClock() {
         minutes = '0' + minutes;
     }
 
-    if (hour < 10) {
-        hour = '0' + hour;
+    if (hours12 < 10) {
+        hours12 = '0' + hours12;
     }
 
-    if (hours < 10) {
-        hours = '0' + hours;
+    if (hours24 < 10) {
+        hours24 = '0' + hours24;
     }
 
-    const currentTime24 = `${hours}:${minutes}:${seconds} 24`;
-    const currentTime12 = `${hour}:${minutes}:${seconds} ${period}`;
+    const currentTime24 = `${hours24}:${minutes}:${seconds} 24`;
+    const currentTime12 = `${hours12}:${minutes}:${seconds} ${period}`;
 
     drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
     drawFace(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
 
-    const hourHandHour = hours == 12 ? 0 : hours;
+    const hourHandHour = hours24 == 12 ? 0 : hours24;
     const hourHandAngle = (hourHandHour * 30) + (minutes / 2);
     const minuteHandAngle = (minutes * 6);
 
