@@ -39,16 +39,29 @@ function animate(timeStamp) {
     lastTime = timeStamp;
 
     configureCanvas();
-    drawLocalClock();
+    drawClock("Local Time", "local");
     requestAnimationFrame(animate);
 }
 
-function drawLocalClock() {
+function convertDateToTimeZone(date, timeZone) {
+    return new Date(date.toLocaleString("en-Us", {timeZone: timeZone}));
+}
+
+function drawClock(lableText, timeZone) {
+
     const now = new Date();
-    let hours24 = now.getHours();
+    let nowAtTimezone;
+    
+    if (timeZone == "local") {
+        nowAtTimezone = now;
+    } else {
+        nowAtTimezone = convertDateToTimeZone(now, timeZone);
+    }
+
+    let hours24 = nowAtTimezone.getHours();
     let hours12 = hours24 % 12;
-    let minutes = now.getMinutes();
-    let seconds = now.getSeconds();
+    let minutes = nowAtTimezone.getMinutes();
+    let seconds = nowAtTimezone.getSeconds();
     const period = hours24 >= 12 ? 'PM' : 'AM';
 
     if (seconds < 10) {
@@ -70,7 +83,7 @@ function drawLocalClock() {
     const currentTime24 = `${hours24}:${minutes}:${seconds} 24`;
     const currentTime12 = `${hours12}:${minutes}:${seconds} ${period}`;
 
-    drawLabel(centerX, centerY - faceRadius - 10, 'Local Time', labelFont, labelColor);
+    drawLabel(centerX, centerY - faceRadius - 10, lableText, labelFont, labelColor);
     drawFace(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
 
     const hourHandHour = hours24 == 12 ? 0 : hours24;
