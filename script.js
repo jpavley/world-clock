@@ -39,7 +39,7 @@ function animate(timeStamp) {
     lastTime = timeStamp;
 
     configureCanvas();
-    drawClock("Local Time", "local");
+    drawClock("Local Time", "local", centerX, centerY);
     requestAnimationFrame(animate);
 }
 
@@ -47,11 +47,11 @@ function convertDateToTimeZone(date, timeZone) {
     return new Date(date.toLocaleString("en-Us", {timeZone: timeZone}));
 }
 
-function drawClock(lableText, timeZone) {
+function drawClock(lableText, timeZone, x, y) {
 
     const now = new Date();
     let nowAtTimezone;
-    
+
     if (timeZone == "local") {
         nowAtTimezone = now;
     } else {
@@ -83,8 +83,8 @@ function drawClock(lableText, timeZone) {
     const currentTime24 = `${hours24}:${minutes}:${seconds} 24`;
     const currentTime12 = `${hours12}:${minutes}:${seconds} ${period}`;
 
-    drawLabel(centerX, centerY - faceRadius - 10, lableText, labelFont, labelColor);
-    drawFace(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
+    drawLabel(x, y - faceRadius - 10, lableText, labelFont, labelColor);
+    drawFace(x, y, faceRadius, faceColor, faceBoarderColor);
 
     const hourHandHour = hours24 == 12 ? 0 : hours24;
     const hourHandAngle = (hourHandHour * 30) + (minutes / 2);
@@ -92,13 +92,13 @@ function drawClock(lableText, timeZone) {
 
     // radians = degrees * (pi / 180)
 
-    drawHourHand(centerX, centerY, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6);
-    drawMinuteHand(centerX, centerY, faceRadius * 0.8, minuteHandAngle * Math.PI / 180, 4);
+    drawHourHand(x, y, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6);
+    drawMinuteHand(x, y, faceRadius * 0.8, minuteHandAngle * Math.PI / 180, 4);
 
-    drawFaceDot(centerX, centerY, faceRadius, faceColor, faceBoarderColor);
+    drawFaceDot(x, y, faceRadius, faceColor, faceBoarderColor);
 
-    drawLabel(centerX, centerY + faceRadius + 20, currentTime24, timeFont, timeColor);
-    drawLabel(centerX, centerY + faceRadius + 34, currentTime12, timeFont, timeColor);
+    drawLabel(x, y + faceRadius + 20, currentTime24, timeFont, timeColor);
+    drawLabel(x, y + faceRadius + 34, currentTime12, timeFont, timeColor);
 }
 
 function drawFace(x, y, radius, color, borderColor) {
