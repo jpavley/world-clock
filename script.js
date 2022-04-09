@@ -39,7 +39,8 @@ function animate(timeStamp) {
     lastTime = timeStamp;
 
     configureCanvas();
-    drawClock("Local Time", "local", centerX, centerY);
+    drawClock("Local Time", "local", centerX-100, centerY);
+    drawClock("San Francisco", "America/Los_Angeles", centerX+100, centerY);
     requestAnimationFrame(animate);
 }
 
