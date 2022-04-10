@@ -23,6 +23,11 @@ const labelFont = 'bold 14px sans-serif';
 const timeColor = '#B5882D';
 const timeFont = 'bold 12px Courier New';
 
+const dialLineWidth = 8;
+const dialBorderColor = '#CADADD';
+const dialRadius = 206.5;
+const positionsOnDial = 8;
+
 var lastTime = 1;
 
 // ***************************
@@ -36,12 +41,33 @@ function configureCanvas() {
 
 function animate(timeStamp) {
     const deltaTime = timeStamp - lastTime;
+    const listOfAngels = calcuateListOfAngles(positionsOnDial);
+    console.log(listOfAngels);
     lastTime = timeStamp;
 
     configureCanvas();
-    drawClock("Local Time", "local", centerX-100, centerY);
-    drawClock("San Francisco", "America/Los_Angeles", centerX+100, centerY);
+    drawDial(centerX, centerY, dialRadius, dialBorderColor, dialLineWidth);
+
+    // draw clock faces around the dial
+    for (let i = 0; i < listOfAngels.length; i++) {
+        const angle = listOfAngels[i];
+        const x = centerX + dialRadius * Math.cos(angle * Math.PI / 180);
+        const y = centerY + dialRadius * Math.sin(angle * Math.PI / 180);
+        drawClock(`${i + 1}, ${angle}`, "local", x, y);
+    }
+    //drawClock("Local Time", "local", centerX-100, centerY);
+    //drawClock("San Francisco", "America/Los_Angeles", centerX+100, centerY);
     requestAnimationFrame(animate);
+}
+
+function calcuateListOfAngles(count) {
+    return Array.from(Array(count), (_, i) => i * (360) / count);
+}
+
+function convertAngelToCoorindate (x, y, radius, angle) {
+    const x1 = x + radius * Math.cos(angle);
+    const y1 = y + radius * Math.sin(angle);
+    return {x: x1, y: y1};
 }
 
 function convertDateToTimeZone(date, timeZone) {
@@ -155,6 +181,14 @@ function drawHourHand(x, y, length, angle, lineWidth) {
 
 function drawMinuteHand(x, y, length, angle, lineWidth) { 
     drawHourHand(x, y, length, angle, lineWidth);
+}
+
+function drawDial(x, y, radius, borderColor, lineWidth) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = borderColor;
+    ctx.stroke();
 }
 
 
