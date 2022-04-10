@@ -27,6 +27,7 @@ const dialLineWidth = 8;
 const dialBorderColor = '#CADADD';
 const dialRadius = 206.5;
 const positionsOnDial = 8;
+const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
 
 var lastTime = 1;
 
@@ -51,8 +52,8 @@ function animate(timeStamp) {
     // draw clock faces around the dial
     for (let i = 0; i < listOfAngels.length; i++) {
         const angle = listOfAngels[i];
-        const x = centerX + dialRadius * Math.cos(angle * Math.PI / 180);
-        const y = centerY + dialRadius * Math.sin(angle * Math.PI / 180);
+        const x = centerX + dialRadius * Math.cos((angle - positionOffsetOnDial) * Math.PI / 180);
+        const y = centerY + dialRadius * Math.sin((angle - positionOffsetOnDial) * Math.PI / 180);
         drawClock(`${i + 1}, ${angle}`, "local", x, y);
     }
     //drawClock("Local Time", "local", centerX-100, centerY);
@@ -64,11 +65,11 @@ function calcuateListOfAngles(count) {
     return Array.from(Array(count), (_, i) => i * (360) / count);
 }
 
-function convertAngelToCoorindate (x, y, radius, angle) {
-    const x1 = x + radius * Math.cos(angle);
-    const y1 = y + radius * Math.sin(angle);
-    return {x: x1, y: y1};
-}
+// function convertAngelToCoorindate (x, y, radius, angle) {
+//     const x1 = x + radius * Math.cos(angle);
+//     const y1 = y + radius * Math.sin(angle);
+//     return {x: x1, y: y1};
+// }
 
 function convertDateToTimeZone(date, timeZone) {
     return new Date(date.toLocaleString("en-Us", {timeZone: timeZone}));
