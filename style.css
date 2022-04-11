@@ -1,5 +1,5 @@
 body {
-    background-color: #F0BA7D;
+    background-color: #000000;
     margin: 0;
     padding: 0;
 }
@@ -8,5 +8,5 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: #313F76 solid 3px;
+    border: #797a7c solid 6px;
 }
