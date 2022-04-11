@@ -25,9 +25,20 @@ const timeFont = 'bold 12px Courier New';
 
 const dialLineWidth = 8;
 const dialBorderColor = '#CADADD';
-const dialRadius = 206.5;
+const dialRadius = 210;
 const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
+
+const citiesAndLocales = {
+    "New York": "America/New_York",
+    "London": "Europe/London",
+    "Berlin": "Europe/Berlin",
+    "Tel Aviv": "Asia/Jerusalem",
+    "Bangalore": "Asia/Kolkata",
+    "Beijing": "Asia/Shanghai",
+    "Sydney": "Australia/Sydney",
+    "San Francisco": "America/Los_Angeles",
+};
 
 var lastTime = 1;
 
@@ -43,33 +54,28 @@ function configureCanvas() {
 function animate(timeStamp) {
     const deltaTime = timeStamp - lastTime;
     const listOfAngels = calcuateListOfAngles(positionsOnDial);
-    console.log(listOfAngels);
     lastTime = timeStamp;
 
     configureCanvas();
     drawDial(centerX, centerY, dialRadius, dialBorderColor, dialLineWidth);
 
     // draw clock faces around the dial
+
     for (let i = 0; i < listOfAngels.length; i++) {
         const angle = listOfAngels[i];
         const x = centerX + dialRadius * Math.cos((angle - positionOffsetOnDial) * Math.PI / 180);
         const y = centerY + dialRadius * Math.sin((angle - positionOffsetOnDial) * Math.PI / 180);
-        drawClock(`${i + 1}, ${angle}`, "local", x, y);
+        const key = Object.keys(citiesAndLocales)[i];
+        drawClock(key, citiesAndLocales[key], x, y);
+
     }
-    //drawClock("Local Time", "local", centerX-100, centerY);
-    //drawClock("San Francisco", "America/Los_Angeles", centerX+100, centerY);
+    drawClock("Local Time", "local", centerX, centerY);
     requestAnimationFrame(animate);
 }
 
 function calcuateListOfAngles(count) {
     return Array.from(Array(count), (_, i) => i * (360) / count);
 }
-
-// function convertAngelToCoorindate (x, y, radius, angle) {
-//     const x1 = x + radius * Math.cos(angle);
-//     const y1 = y + radius * Math.sin(angle);
-//     return {x: x1, y: y1};
-// }
 
 function convertDateToTimeZone(date, timeZone) {
     return new Date(date.toLocaleString("en-Us", {timeZone: timeZone}));
@@ -125,8 +131,8 @@ function drawClock(lableText, timeZone, x, y) {
 
     drawFaceDot(x, y, faceRadius, faceColor, faceBoarderColor);
 
-    drawLabel(x, y + faceRadius + 20, currentTime24, timeFont, timeColor);
-    drawLabel(x, y + faceRadius + 34, currentTime12, timeFont, timeColor);
+    drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, timeColor);
+    drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, timeColor);
 }
 
 function drawFace(x, y, radius, color, borderColor) {
