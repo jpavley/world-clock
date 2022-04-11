@@ -86,11 +86,7 @@ function drawClock(lableText, timeZone, x, y) {
     const now = new Date();
     let nowAtTimezone;
 
-    if (timeZone == "local") {
-        nowAtTimezone = now;
-    } else {
-        nowAtTimezone = convertDateToTimeZone(now, timeZone);
-    }
+    timeZone == "local" ? nowAtTimezone = now : nowAtTimezone = convertDateToTimeZone(now, timeZone);
 
     let hours24 = nowAtTimezone.getHours();
     let hours12 = hours24 % 12;
@@ -98,24 +94,13 @@ function drawClock(lableText, timeZone, x, y) {
     let seconds = nowAtTimezone.getSeconds();
     const period = hours24 >= 12 ? 'PM' : 'AM';
 
-    if (seconds < 10) {
-        seconds = '0' + seconds;
-    }
+    seconds < 10 ? seconds = '0' + seconds : seconds = seconds;
+    minutes < 10 ? minutes = '0' + minutes : minutes = minutes;
+    hours12 < 10 ? hours12 = '0' + hours12 : hours12 = hours12;
+    hours24 < 10 ? hours24 = '0' + hours24 : hours24 = hours24;
 
-    if (minutes < 10) {
-        minutes = '0' + minutes;
-    }
-
-    if (hours12 < 10) {
-        hours12 = '0' + hours12;
-    }
-
-    if (hours24 < 10) {
-        hours24 = '0' + hours24;
-    }
-
-    const currentTime24 = `${hours24}:${minutes}:${seconds} 24`;
-    const currentTime12 = `${hours12}:${minutes}:${seconds} ${period}`;
+    const currentTime24 = `${hours24}:${minutes} 24`;
+    const currentTime12 = `${hours12}:${minutes} ${period}`;
 
     drawLabel(x, y - faceRadius - 10, lableText, labelFont, labelColor);
     drawFace(x, y, faceRadius, faceColor, faceBoarderColor);
@@ -127,7 +112,7 @@ function drawClock(lableText, timeZone, x, y) {
     // radians = degrees * (pi / 180)
 
     drawHourHand(x, y, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6);
-    drawMinuteHand(x, y, faceRadius * 0.8, minuteHandAngle * Math.PI / 180, 4);
+    drawMinuteHand(x, y, faceRadius * 0.9, minuteHandAngle * Math.PI / 180, 4);
 
     drawFaceDot(x, y, faceRadius, faceColor, faceBoarderColor);
 
