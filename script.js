@@ -8,26 +8,31 @@
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-
 const faceRadius = 45;
 const dotRadius = 8;
 const faceBorderWidth = 4;
+const dialLineWidth = 8;
+const dialRadius = 210;
+const positionsOnDial = 8;
+const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
+
+// ***************************
+// *  Colors                 *
+// ***************************
+
 const faceColor = '#E18256';
 const faceBoarderColor = '#313F76';
-
 const labelColor = '#313F76';
 const labelFont = 'bold 14px sans-serif';
 const timeColor = '#B5882D';
 const timeFont = 'bold 12px Courier New';
-
-const dialLineWidth = 8;
 const dialBorderColor = '#CADADD';
-const dialRadius = 210;
-const positionsOnDial = 8;
-const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
+
+// ***************************
+// *  Timezones              *
+// ***************************
 
 const citiesAndLocales = {
     "New York": "America/New_York",
