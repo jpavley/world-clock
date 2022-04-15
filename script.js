@@ -1,20 +1,25 @@
 // World Clock XL
 // (c) 2022 by John Pavley
 
-
 // ***************************
 // *  Global Variables       *
 // ***************************
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const viewPortWidth = getViewportSize().width;
+const viewPortHeight = getViewportSize().height;
+const shortSide = Math.min(viewPortWidth, viewPortHeight);
+canvas.width = shortSide;
+canvas.height = shortSide;
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
+
 const faceRadius = 45;
 const dotRadius = 8;
 const faceBorderWidth = 4;
 const dialLineWidth = 8;
-const dialRadius = 210;
+const dialRadius = shortSide * 0.35;
 const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
 const labelFont = 'bold 14px sans-serif';
@@ -63,9 +68,16 @@ const citiesAndLocales = {
 // *  Functions              *
 // ***************************
 
+function getViewportSize() {
+    return {
+        width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+        height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    }
+}
+
 function configureCanvas() {
     ctx.fillStyle = '#F5E8D0';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, shortSide, shortSide);
 }
 
 function animate(timeStamp) {
