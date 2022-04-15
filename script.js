@@ -17,18 +17,34 @@ const dialLineWidth = 8;
 const dialRadius = 210;
 const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
+const labelFont = 'bold 14px sans-serif';
+const timeFont = 'bold 12px Courier New';
 var lastTime = 1;
 
 // ***************************
 // *  Colors                 *
 // ***************************
 
+const staticColors = {
+    labelColor: '#313F76',
+    timeColor: '#B5882D',
+    dialBorderColor: '#CADADD'
+}
+
+const amColors = {
+    faceColor: '#E18256',
+    faceBoarderColor: '#313F76'
+}
+
+const pmColors = {
+    faceColor: '#E18256',
+    faceBoarderColor: '#313F76'
+}
+
 const faceColor = '#E18256';
 const faceBoarderColor = '#313F76';
 const labelColor = '#313F76';
-const labelFont = 'bold 14px sans-serif';
 const timeColor = '#B5882D';
-const timeFont = 'bold 12px Courier New';
 const dialBorderColor = '#CADADD';
 
 // ***************************
