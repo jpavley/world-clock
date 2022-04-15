@@ -28,17 +28,18 @@ var lastTime = 1;
 const staticColors = {
     labelColor: '#313F76',
     timeColor: '#B5882D',
-    dialBorderColor: '#CADADD'
+    dialBorderColor: '#CADADD',
+    faceBoarderColor: '#313F76'
 }
 
 const amColors = {
     faceColor: '#CAE2AA',
-    faceBoarderColor: '#313F76'
+    handColor: '#313F76'
 }
 
 const pmColors = {
     faceColor: '#97A88E',
-    faceBoarderColor: '#F5E8D0'
+    handColor: '#F5E8D0'
 }
 
 const faceColor = '#E18256';
@@ -123,10 +124,10 @@ function drawClock(lableText, timeZone, x, y) {
     const currentTime12 = `${hours12}:${minutes} ${period}`;
 
     const fc = period == 'AM' ? amColors.faceColor : pmColors.faceColor;
-    const fbc = period == 'AM' ? amColors.faceBoarderColor : pmColors.faceBoarderColor;
+    const fbc = period == 'AM' ? amColors.handColor : pmColors.handColor;
 
     drawLabel(x, y - faceRadius - 10, lableText, labelFont, staticColors.labelColor);
-    drawFace(x, y, faceRadius, fc, fbc);
+    drawFace(x, y, faceRadius, fc);
 
     const hourHandHour = hours24 == 12 ? 0 : hours24;
     const hourHandAngle = (hourHandHour * 30) + (minutes / 2);
@@ -143,12 +144,12 @@ function drawClock(lableText, timeZone, x, y) {
     drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, staticColors.timeColor);
 }
 
-function drawFace(x, y, radius, color, borderColor) {
+function drawFace(x, y, radius, color) {
 
     // face border
     ctx.beginPath();
     ctx.arc(x, y, radius + faceBorderWidth, 0, Math.PI * 2, false);
-    ctx.fillStyle = borderColor;
+    ctx.fillStyle = faceBoarderColor;
     ctx.fill();
 
     // inner face
