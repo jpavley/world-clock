@@ -42,12 +42,6 @@ const pmColors = {
     handColor: '#F5E8D0'
 }
 
-const faceColor = '#E18256';
-const faceBoarderColor = '#313F76';
-const labelColor = '#313F76';
-const timeColor = '#B5882D';
-const dialBorderColor = '#CADADD';
-
 // ***************************
 // *  Timezones              *
 // ***************************
@@ -149,7 +143,7 @@ function drawFace(x, y, radius, color) {
     // face border
     ctx.beginPath();
     ctx.arc(x, y, radius + faceBorderWidth, 0, Math.PI * 2, false);
-    ctx.fillStyle = faceBoarderColor;
+    ctx.fillStyle = staticColors.faceBoarderColor;
     ctx.fill();
 
     // inner face
