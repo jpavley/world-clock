@@ -32,13 +32,13 @@ const staticColors = {
 }
 
 const amColors = {
-    faceColor: '#E18256',
+    faceColor: '#CAE2AA',
     faceBoarderColor: '#313F76'
 }
 
 const pmColors = {
-    faceColor: '#E18256',
-    faceBoarderColor: '#313F76'
+    faceColor: '#97A88E',
+    faceBoarderColor: '#F5E8D0'
 }
 
 const faceColor = '#E18256';
@@ -77,7 +77,7 @@ function animate(timeStamp) {
     lastTime = timeStamp;
 
     configureCanvas();
-    drawDial(centerX, centerY, dialRadius, dialBorderColor, dialLineWidth);
+    drawDial(centerX, centerY, dialRadius, staticColors.dialBorderColor, dialLineWidth);
 
     // draw clock faces around the dial
 
@@ -122,8 +122,11 @@ function drawClock(lableText, timeZone, x, y) {
     const currentTime24 = `${hours24}:${minutes} 24`;
     const currentTime12 = `${hours12}:${minutes} ${period}`;
 
-    drawLabel(x, y - faceRadius - 10, lableText, labelFont, labelColor);
-    drawFace(x, y, faceRadius, faceColor, faceBoarderColor);
+    const fc = period == 'AM' ? amColors.faceColor : pmColors.faceColor;
+    const fbc = period == 'AM' ? amColors.faceBoarderColor : pmColors.faceBoarderColor;
+
+    drawLabel(x, y - faceRadius - 10, lableText, labelFont, staticColors.labelColor);
+    drawFace(x, y, faceRadius, fc, fbc);
 
     const hourHandHour = hours24 == 12 ? 0 : hours24;
     const hourHandAngle = (hourHandHour * 30) + (minutes / 2);
@@ -131,13 +134,13 @@ function drawClock(lableText, timeZone, x, y) {
 
     // radians = degrees * (pi / 180)
 
-    drawHourHand(x, y, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6);
-    drawMinuteHand(x, y, faceRadius * 0.9, minuteHandAngle * Math.PI / 180, 4);
+    drawHourHand(x, y, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6, fbc);
+    drawMinuteHand(x, y, faceRadius * 0.9, minuteHandAngle * Math.PI / 180, 4, fbc);
 
-    drawFaceDot(x, y, faceRadius, faceColor, faceBoarderColor);
+    drawFaceDot(x, y, faceRadius, fc, fbc);
 
-    drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, timeColor);
-    drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, timeColor);
+    drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, staticColors.timeColor);
+    drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, staticColors.timeColor);
 }
 
 function drawFace(x, y, radius, color, borderColor) {
@@ -178,7 +181,7 @@ function drawLabel(x, y, text, font, fontColor) {
     ctx.fillText(text, x - textWidth/2, y);
 }
 
-function drawHourHand(x, y, length, angle, lineWidth) {
+function drawHourHand(x, y, length, angle, lineWidth, color) {
     ctx.save();
     ctx.beginPath();
     ctx.translate(x, y);
@@ -186,13 +189,13 @@ function drawHourHand(x, y, length, angle, lineWidth) {
     ctx.moveTo(0, 0);
     ctx.lineTo(0, -length);
     ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = faceBoarderColor;
+    ctx.strokeStyle = color;
     ctx.stroke();
     ctx.restore();
 }
 
-function drawMinuteHand(x, y, length, angle, lineWidth) { 
-    drawHourHand(x, y, length, angle, lineWidth);
+function drawMinuteHand(x, y, length, angle, lineWidth, color) { 
+    drawHourHand(x, y, length, angle, lineWidth, color);
 }
 
 function drawDial(x, y, radius, borderColor, lineWidth) {
