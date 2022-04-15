@@ -17,6 +17,7 @@ const dialLineWidth = 8;
 const dialRadius = 210;
 const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
+var lastTime = 1;
 
 // ***************************
 // *  Colors                 *
@@ -44,8 +45,6 @@ const citiesAndLocales = {
     "Sydney": "Australia/Sydney",
     "San Francisco": "America/Los_Angeles",
 };
-
-var lastTime = 1;
 
 // ***************************
 // *  Functions              *
