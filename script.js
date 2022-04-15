@@ -34,12 +34,14 @@ const staticColors = {
 
 const amColors = {
     faceColor: '#CAE2AA',
-    handColor: '#313F76'
+    handColor: '#313F76',
+    timeColor: '#E18256',
 }
 
 const pmColors = {
     faceColor: '#97A88E',
-    handColor: '#F5E8D0'
+    handColor: '#F5E8D0',
+    timeColor: '#7D579A',
 }
 
 // ***************************
@@ -119,6 +121,7 @@ function drawClock(lableText, timeZone, x, y) {
 
     const fc = period == 'AM' ? amColors.faceColor : pmColors.faceColor;
     const fbc = period == 'AM' ? amColors.handColor : pmColors.handColor;
+    const tc = period == 'AM' ? amColors.timeColor : pmColors.timeColor;
 
     drawLabel(x, y - faceRadius - 10, lableText, labelFont, staticColors.labelColor);
     drawFace(x, y, faceRadius, fc);
@@ -134,8 +137,8 @@ function drawClock(lableText, timeZone, x, y) {
 
     drawFaceDot(x, y, faceRadius, fc, fbc);
 
-    drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, staticColors.timeColor);
-    drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, staticColors.timeColor);
+    drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, tc);
+    drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, tc);
 }
 
 function drawFace(x, y, radius, color) {
