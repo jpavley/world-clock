@@ -16,7 +16,7 @@ canvas.height = shortSide;
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 
-const faceRadius = 45;
+const faceRadius = shortSide * 0.075;
 const dotRadius = 8;
 const faceBorderWidth = 4;
 const dialLineWidth = 8;
