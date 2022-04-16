@@ -10,7 +10,11 @@ const ctx = canvas.getContext('2d');
 const viewPortWidth = getViewportSize().width;
 const viewPortHeight = getViewportSize().height;
 let shortSide = Math.min(viewPortWidth, viewPortHeight);
-shortSide = shortSide < 600 ? shortSide : 600;
+shortSide = shortSide < 600 ? shortSide : 600; // TODO: add to configureCanvas or delete
+let lastTime = 1;
+
+// TODO: calculate all these values with dynamicMetrics
+
 canvas.width = shortSide;
 canvas.height = shortSide;
 const centerX = canvas.width / 2;
@@ -25,7 +29,6 @@ const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
 const labelFont = 'bold 14px sans-serif';
 const timeFont = 'bold 12px Courier New';
-let lastTime = 1;
 
 // ***************************
 // *  Metrics                *
@@ -173,6 +176,7 @@ function animate(timeStamp) {
     requestAnimationFrame(animate);
 }
 
+// map function: create an array of angles with step of 360/count
 function calcuateListOfAngles(count) {
     return Array.from(Array(count), (_, i) => i * (360) / count);
 }
