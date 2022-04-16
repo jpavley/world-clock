@@ -9,7 +9,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const viewPortWidth = getViewportSize().width;
 const viewPortHeight = getViewportSize().height;
-var shortSide = Math.min(viewPortWidth, viewPortHeight);
+let shortSide = Math.min(viewPortWidth, viewPortHeight);
 shortSide = shortSide < 600 ? shortSide : 600;
 canvas.width = shortSide;
 canvas.height = shortSide;
@@ -25,7 +25,77 @@ const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
 const labelFont = 'bold 14px sans-serif';
 const timeFont = 'bold 12px Courier New';
-var lastTime = 1;
+let lastTime = 1;
+
+// ***************************
+// *  Metrics                *
+// ***************************
+
+const hardMetrics = {
+    size: 540,
+    centerX: 270,
+    centerY: 270,
+
+    faceRadius: 90,
+    faceBorderWidth: 3,
+    faceDotRadius: 18,
+    faceDotBorderWidth: 4,
+
+    minuteHandLength: 36,
+    minuteHandWidth: 4,
+    hourHandLength: 22,
+    hourHandWidth: 6,
+
+    dialRadius: 413,
+    dialLineWidth: 8,
+
+    lableFontSize: 14,
+    timeFontSize: 12
+};
+
+const dynamicMetrics = {
+    size: 0,
+    centerX: 0,
+    centerY: 0,
+
+    faceRadius: 0,
+    faceBorderWidth: 0,
+    faceDotRadius: 0,
+    faceDotBorderWidth: 0,
+
+    minuteHandLength: 0,
+    minuteHandWidth: 0,
+    hourHandLength: 0,
+    hourHandWidth: 0,
+
+    dialRadius: 0,
+    dialLineWidth: 0,
+
+    lableFontSize: 0,
+    timeFontSize: 0
+};
+
+function updateDynamicMetrics(shortSide) {
+    dynamicMetrics.size = shortSide;
+    dynamicMetrics.centerX = shortSide / 2;
+    dynamicMetrics.centerY = shortSide / 2;
+
+    dynamicMetrics.faceRadius = shortSide / (hardMetrics.size / hardMetrics.faceRadius);
+    dynamicMetrics.faceBorderWidth = shortSide / (hardMetrics.size / hardMetrics.faceBorderWidth);
+    dynamicMetrics.faceDotRadius = shortSide / (hardMetrics.size / hardMetrics.faceDotRadius);
+    dynamicMetrics.faceDotBorderWidth = shortSide / (hardMetrics.size / hardMetrics.faceDotBorderWidth);
+
+    dynamicMetrics.minuteHandLength = shortSide / (hardMetrics.size / hardMetrics.minuteHandLength);
+    dynamicMetrics.minuteHandWidth = shortSide / (hardMetrics.size / hardMetrics.minuteHandWidth);
+    dynamicMetrics.hourHandLength = shortSide / (hardMetrics.size / hardMetrics.hourHandLength);
+    dynamicMetrics.hourHandWidth = shortSide / (hardMetrics.size / hardMetrics.hourHandWidth);
+
+    dynamicMetrics.dialRadius = shortSide / (hardMetrics.size / hardMetrics.dialRadius);
+    dynamicMetrics.dialLineWidth = shortSide / (hardMetrics.size / hardMetrics.dialLineWidth);
+
+    dynamicMetrics.lableFontSize = shortSide / (hardMetrics.size / hardMetrics.lableFontSize);
+    dynamicMetrics.timeFontSize = shortSide / (hardMetrics.size / hardMetrics.timeFontSize);
+}
 
 // ***************************
 // *  Colors                 *
@@ -36,19 +106,19 @@ const staticColors = {
     timeColor: '#B5882D',
     dialBorderColor: '#CADADD',
     faceBoarderColor: '#313F76'
-}
+};
 
 const amColors = {
     faceColor: '#CAE2AA',
     handColor: '#313F76',
     timeColor: '#E18256',
-}
+};
 
 const pmColors = {
     faceColor: '#97A88E',
     handColor: '#F5E8D0',
     timeColor: '#7D579A',
-}
+};
 
 // ***************************
 // *  Timezones              *
