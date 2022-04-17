@@ -13,10 +13,7 @@ const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
 
 let shortSide = Math.min(viewPortWidth, viewPortHeight);
-//shortSide = shortSide < 1000 ? shortSide : 1000; // TODO: add to configureCanvas or delete
 let lastTime = 1;
-
-// TODO: calculate all these values with dynamicMetrics
 
 canvas.width = shortSide;
 canvas.height = shortSide;
@@ -35,6 +32,9 @@ let hourHandWidth = 0;
 let minuteHandWidth = 0;
 let hourHandLength = 0;
 let minuteHandLength = 0;
+let spaceBelowZoneLabel = 0;
+let spaceAboveTime12Label = 0;
+let spaceAboveTime24Label = 0;
 
 // ***************************
 // *  Metrics                *
@@ -42,27 +42,28 @@ let minuteHandLength = 0;
 
 const hardMetrics = {
     size: 540,
-    centerX: 270,
-    centerY: 270,
+    centerX: 540/2,
+    centerY: 540/2,
 
-    faceRadius: 90/2,
+    faceRadius: 74/2,
     faceBorderWidth: 3,
     faceDotRadius: 18/2,
     faceDotBorderWidth: 4,
 
-    minuteHandLength: 40,
-    minuteHandWidth: 4,
-    hourHandLength: 30,
-    hourHandWidth: 6,
+    minuteHandLength: 34,
+    minuteHandWidth: 6,
+    hourHandLength: 24,
+    hourHandWidth: 8,
 
-    dialRadius: 413/2,
+    dialRadius: 394/2,
     dialLineWidth: 8,
 
     lableFontSize: 14,
     timeFontSize: 12,
 
-    // TODO: add faceDotBorderWidth, space between labels
-    // TODO: hints for very small and very large sizes for fontsize and spacing
+    spaceBelowZoneLabel: 10,
+    spaceAboveTime12Label: 16,
+    spaceAboveTime24Label: 28,
 };
 
 const dynamicMetrics = {
@@ -107,6 +108,10 @@ function updateDynamicMetrics(shortSide) {
 
     dynamicMetrics.lableFontSize = shortSide / (hardMetrics.size / hardMetrics.lableFontSize);
     dynamicMetrics.timeFontSize = shortSide / (hardMetrics.size / hardMetrics.timeFontSize);
+
+    dynamicMetrics.spaceBelowZoneLabel = shortSide / (hardMetrics.size / hardMetrics.spaceBelowZoneLabel);
+    dynamicMetrics.spaceAboveTime12Label = shortSide / (hardMetrics.size / hardMetrics.spaceAboveTime12Label);
+    dynamicMetrics.spaceAboveTime24Label = shortSide / (hardMetrics.size / hardMetrics.spaceAboveTime24Label);
 }
 
 // ***************************
@@ -183,7 +188,9 @@ function configureCanvas() {
     minuteHandWidth = dynamicMetrics.minuteHandWidth;
     hourHandLength = dynamicMetrics.hourHandLength;
     minuteHandLength = dynamicMetrics.minuteHandLength;
-
+    spaceBelowZoneLabel = dynamicMetrics.spaceBelowZoneLabel;
+    spaceAboveTime12Label = dynamicMetrics.spaceAboveTime12Label;
+    spaceAboveTime24Label = dynamicMetrics.spaceAboveTime24Label;
 }
 
 function animate(timeStamp) {
@@ -242,7 +249,7 @@ function drawClock(lableText, timeZone, x, y) {
     const fbc = period == 'AM' ? amColors.handColor : pmColors.handColor;
     const tc = period == 'AM' ? amColors.timeColor : pmColors.timeColor;
 
-    drawLabel(x, y - faceRadius - 10, lableText, labelFont, staticColors.labelColor);
+    drawLabel(x, y - faceRadius - spaceBelowZoneLabel, lableText, labelFont, staticColors.labelColor);
     drawFace(x, y, faceRadius, fc);
 
     const hourHandHour = hours24 == 12 ? 0 : hours24;
@@ -256,8 +263,8 @@ function drawClock(lableText, timeZone, x, y) {
 
     drawFaceDot(x, y, fc, fbc);
 
-    drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, tc);
-    drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, tc);
+    drawLabel(x, y + faceRadius + spaceAboveTime12Label, currentTime12, timeFont, tc);
+    drawLabel(x, y + faceRadius + spaceAboveTime24Label, currentTime24, timeFont, tc);
 }
 
 function drawFace(x, y, radius, color) {
