@@ -13,7 +13,7 @@ const positionsOnDial = 8;
 const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
 
 let shortSide = Math.min(viewPortWidth, viewPortHeight);
-shortSide = shortSide < 1000 ? shortSide : 1000; // TODO: add to configureCanvas or delete
+//shortSide = shortSide < 1000 ? shortSide : 1000; // TODO: add to configureCanvas or delete
 let lastTime = 1;
 
 // TODO: calculate all these values with dynamicMetrics
@@ -25,6 +25,7 @@ let centerY = canvas.height / 2;
 
 let faceRadius = 0;
 let dotRadius = 0;
+let faceDotBorderWidth = 0;
 let faceBorderWidth = 0;
 let dialLineWidth = 0;
 let dialRadius = 0;
@@ -173,6 +174,7 @@ function configureCanvas() {
     faceRadius = dynamicMetrics.faceRadius;
     dotRadius = dynamicMetrics.faceDotRadius;
     faceBorderWidth = dynamicMetrics.faceBorderWidth;
+    faceDotBorderWidth = dynamicMetrics.faceDotBorderWidth;
     dialLineWidth = dynamicMetrics.dialLineWidth;
     dialRadius = dynamicMetrics.dialRadius;
     labelFont = `bold ${dynamicMetrics.lableFontSize}px sans-serif`;
@@ -252,7 +254,7 @@ function drawClock(lableText, timeZone, x, y) {
     drawHourHand(x, y, hourHandLength, hourHandAngle * Math.PI / 180, hourHandWidth, fbc);
     drawMinuteHand(x, y, minuteHandLength, minuteHandAngle * Math.PI / 180, minuteHandWidth, fbc);
 
-    drawFaceDot(x, y, faceRadius, fc, fbc);
+    drawFaceDot(x, y, fc, fbc);
 
     drawLabel(x, y + faceRadius + 16, currentTime12, timeFont, tc);
     drawLabel(x, y + faceRadius + 30, currentTime24, timeFont, tc);
@@ -262,7 +264,7 @@ function drawFace(x, y, radius, color) {
 
     // face border
     ctx.beginPath();
-    ctx.arc(x, y, radius + faceBorderWidth, 0, Math.PI * 2, false);
+    ctx.arc(x, y, radius + faceDotBorderWidth, 0, Math.PI * 2, false);
     ctx.fillStyle = staticColors.faceBoarderColor;
     ctx.fill();
 
@@ -274,11 +276,11 @@ function drawFace(x, y, radius, color) {
 }
 
 
-function drawFaceDot(x, y, radius, color, borderColor) {
+function drawFaceDot(x, y, color, borderColor) {
 
     // center dot border
     ctx.beginPath();
-    ctx.arc(x, y, dotRadius + 3, 0, Math.PI * 2, false);
+    ctx.arc(x, y, dotRadius + faceBorderWidth, 0, Math.PI * 2, false);
     ctx.fillStyle = color;
     ctx.fill();    
 
