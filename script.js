@@ -9,26 +9,31 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const viewPortWidth = getViewportSize().width;
 const viewPortHeight = getViewportSize().height;
+const positionsOnDial = 8;
+const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
+
 let shortSide = Math.min(viewPortWidth, viewPortHeight);
-shortSide = shortSide < 600 ? shortSide : 600; // TODO: add to configureCanvas or delete
+shortSide = shortSide < 1000 ? shortSide : 1000; // TODO: add to configureCanvas or delete
 let lastTime = 1;
 
 // TODO: calculate all these values with dynamicMetrics
 
 canvas.width = shortSide;
 canvas.height = shortSide;
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
+let centerX = canvas.width / 2;
+let centerY = canvas.height / 2;
 
-const faceRadius = shortSide * 0.075;
-const dotRadius = 8;
-const faceBorderWidth = 4;
-const dialLineWidth = 8;
-const dialRadius = shortSide * 0.35;
-const positionsOnDial = 8;
-const positionOffsetOnDial = 90; // so that 12 o'clock is 0 degrees
-const labelFont = 'bold 14px sans-serif';
-const timeFont = 'bold 12px Courier New';
+let faceRadius = 0;
+let dotRadius = 0;
+let faceBorderWidth = 0;
+let dialLineWidth = 0;
+let dialRadius = 0;
+let labelFont = '';
+let timeFont = '';
+let hourHandWidth = 0;
+let minuteHandWidth = 0;
+let hourHandLength = 0;
+let minuteHandLength = 0;
 
 // ***************************
 // *  Metrics                *
@@ -39,21 +44,24 @@ const hardMetrics = {
     centerX: 270,
     centerY: 270,
 
-    faceRadius: 90,
+    faceRadius: 90/2,
     faceBorderWidth: 3,
-    faceDotRadius: 18,
+    faceDotRadius: 18/2,
     faceDotBorderWidth: 4,
 
-    minuteHandLength: 36,
+    minuteHandLength: 40,
     minuteHandWidth: 4,
-    hourHandLength: 22,
+    hourHandLength: 30,
     hourHandWidth: 6,
 
-    dialRadius: 413,
+    dialRadius: 413/2,
     dialLineWidth: 8,
 
     lableFontSize: 14,
-    timeFontSize: 12
+    timeFontSize: 12,
+
+    // TODO: add faceDotBorderWidth, space between labels
+    // TODO: hints for very small and very large sizes for fontsize and spacing
 };
 
 const dynamicMetrics = {
@@ -152,6 +160,28 @@ function getViewportSize() {
 function configureCanvas() {
     ctx.fillStyle = '#F5E8D0';
     ctx.fillRect(0, 0, shortSide, shortSide);
+    updateDynamicMetrics(shortSide);
+    //console.log(dynamicMetrics);
+
+    // TODO: add listeners for resize and orientation change
+
+    // canvas.width = shortSide;
+    // canvas.height = shortSide;
+    // centerX = canvas.width / 2;
+    // centerY = canvas.height / 2;
+
+    faceRadius = dynamicMetrics.faceRadius;
+    dotRadius = dynamicMetrics.faceDotRadius;
+    faceBorderWidth = dynamicMetrics.faceBorderWidth;
+    dialLineWidth = dynamicMetrics.dialLineWidth;
+    dialRadius = dynamicMetrics.dialRadius;
+    labelFont = `bold ${dynamicMetrics.lableFontSize}px sans-serif`;
+    timeFont = `bold ${dynamicMetrics.timeFontSize}px Courier New`;
+    hourHandWidth = dynamicMetrics.hourHandWidth;
+    minuteHandWidth = dynamicMetrics.minuteHandWidth;
+    hourHandLength = dynamicMetrics.hourHandLength;
+    minuteHandLength = dynamicMetrics.minuteHandLength;
+
 }
 
 function animate(timeStamp) {
@@ -219,8 +249,8 @@ function drawClock(lableText, timeZone, x, y) {
 
     // radians = degrees * (pi / 180)
 
-    drawHourHand(x, y, faceRadius * 0.6, hourHandAngle * Math.PI / 180, 6, fbc);
-    drawMinuteHand(x, y, faceRadius * 0.9, minuteHandAngle * Math.PI / 180, 4, fbc);
+    drawHourHand(x, y, hourHandLength, hourHandAngle * Math.PI / 180, hourHandWidth, fbc);
+    drawMinuteHand(x, y, minuteHandLength, minuteHandAngle * Math.PI / 180, minuteHandWidth, fbc);
 
     drawFaceDot(x, y, faceRadius, fc, fbc);
 
