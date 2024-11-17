@@ -224,45 +224,59 @@ function convertDateToTimeZone(date, timeZone) {
     return new Date(date.toLocaleString("en-Us", {timeZone: timeZone}));
 }
 
-function drawClock(lableText, timeZone, x, y) {
-
+function drawClock(labelText, timeZone, x, y) {
     const now = new Date();
     let nowAtTimezone;
 
-    timeZone == "local" ? nowAtTimezone = now : nowAtTimezone = convertDateToTimeZone(now, timeZone);
+    if (timeZone === "local") {
+        nowAtTimezone = now;
+    } else {
+        try {
+            nowAtTimezone = convertDateToTimeZone(now, timeZone);
+        } catch (error) {
+            console.error("Invalid time zone:", timeZone);
+            return;
+        }
+    }
 
     let hours24 = nowAtTimezone.getHours();
-    let hours12 = hours24 % 12;
+    let hours12 = hours24 % 12 || 12; // Convert 0 to 12 for 12-hour format
     let minutes = nowAtTimezone.getMinutes();
     let seconds = nowAtTimezone.getSeconds();
     const period = hours24 >= 12 ? 'PM' : 'AM';
 
-    seconds < 10 ? seconds = '0' + seconds : seconds = seconds;
-    minutes < 10 ? minutes = '0' + minutes : minutes = minutes;
-    hours12 < 10 ? hours12 = '0' + hours12 : hours12 = hours12;
-    hours24 < 10 ? hours24 = '0' + hours24 : hours24 = hours24;
+    // Pad single-digit values with leading zeros
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    hours12 = hours12 < 10 ? '0' + hours12 : hours12;
+    hours24 = hours24 < 10 ? '0' + hours24 : hours24;
 
     const currentTime24 = `${hours24}:${minutes} 24`;
     const currentTime12 = `${hours12}:${minutes} ${period}`;
 
-    const fc = period == 'AM' ? amColors.faceColor : pmColors.faceColor;
-    const fbc = period == 'AM' ? amColors.handColor : pmColors.handColor;
-    const tc = period == 'AM' ? amColors.timeColor : pmColors.timeColor;
+    // Determine colors based on AM/PM
+    const fc = period === 'AM' ? amColors.faceColor : pmColors.faceColor;
+    const fbc = period === 'AM' ? amColors.handColor : pmColors.handColor;
+    const tc = period === 'AM' ? amColors.timeColor : pmColors.timeColor;
 
-    drawLabel(x, y - faceRadius - spaceBelowZoneLabel, lableText, labelFont, staticColors.labelColor);
+    // Draw clock label
+    drawLabel(x, y - faceRadius - spaceBelowZoneLabel, labelText, labelFont, staticColors.labelColor);
+    // Draw clock face
     drawFace(x, y, faceRadius, fc);
 
-    const hourHandHour = hours24 == 12 ? 0 : hours24;
+    // Calculate hand angles
+    const hourHandHour = hours24 % 12;
     const hourHandAngle = (hourHandHour * 30) + (minutes / 2);
     const minuteHandAngle = (minutes * 6);
 
-    // radians = degrees * (pi / 180)
-
+    // Draw clock hands
     drawHourHand(x, y, hourHandLength, hourHandAngle * Math.PI / 180, hourHandWidth, fbc);
     drawMinuteHand(x, y, minuteHandLength, minuteHandAngle * Math.PI / 180, minuteHandWidth, fbc);
 
+    // Draw center dot
     drawFaceDot(x, y, fc, fbc);
 
+    // Draw current time labels
     drawLabel(x, y + faceRadius + spaceAboveTime12Label, currentTime12, timeFont, tc);
     drawLabel(x, y + faceRadius + spaceAboveTime24Label, currentTime24, timeFont, tc);
 }
